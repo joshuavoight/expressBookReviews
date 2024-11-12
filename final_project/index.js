@@ -11,9 +11,15 @@ app.use(express.json());
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
 app.use("/customer/auth/*", function auth(req,res,next){
-//Write the authenication mechanism here
+    if (uname === "user" && pwd === "password") {
+        return res.json({
+          token: jsonwebtoken.sign({ user: "user" }, JWT_SECRET),
+        });
+      }
 });
- 
+
+const verificationStatus =   jsonwebtoken.verify(tokenValue, "aVeryVerySecretString");
+
 const PORT =5000;
 
 app.use("/customer", customer_routes);
